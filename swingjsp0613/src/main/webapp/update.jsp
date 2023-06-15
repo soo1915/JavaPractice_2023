@@ -32,17 +32,13 @@
 	System.out.println("접속 성공!");
 %>
 <%
-	String sql = "update person set name = ?, addr = ?, phone = ? where id = ?";
-	PreparedStatement ps = conn.prepareStatement(sql);
-	ps.setString(1, name);
-	ps.setString(2, addr);
-	ps.setString(3, phone);
-	ps.setInt(4, mid);
-	
-	int cnt = ps.executeUpdate();
-	
+	String sql = String.format("update person set name='%s', phone='%s', addr = '%s' where id = %s", name, phone, addr, mid);
+	Statement stmt = conn.createStatement();
+	stmt.executeUpdate(sql);
+	response.sendRedirect("list.jsp");
 %>
 <form action="update.jsp">
+<input type = "text" name = "id" value = "<%= mid %>"/>
 <table border = "1">
 	<tr>
 		<td>아이디</td>
@@ -61,7 +57,7 @@
 		<td><%=phone %>
 	</tr>
 	<tr>
-		<td colspan = "2"><input type = "submit" value = "수정" /> </td>
+		<td colspan = "2"><input type = "button" value = "메인으로"/> </td>
 	</tr>
 </table>
 </form>
