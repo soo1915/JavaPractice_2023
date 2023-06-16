@@ -74,7 +74,8 @@
 <br>
 
 <input type = "button" value = "목록보기" onclick="location.href='list.jsp'">
-<input type = "button" value = "수정" onclick="location.href='write1.jsp?num=<%=num%>'">
-<input type = "button" value = "삭제" onclick="location.href='delete.jsp?num=<%=num%>'">
+<input type = "submit" value = "수정" onclick="location.href='write.jsp?num=<%=num%>'">
+<input type = "button" value = "삭제" onclick="location.href='delete.jsp?num=<%=num %>'">
+
 </body>
 </html>

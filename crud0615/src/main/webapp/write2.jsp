@@ -21,22 +21,22 @@
 			//쿼리실행
 			ResultSet rs = stmt.executeQuery(
 					"select * from board where num="+num);)
-			{
-		
+	{
+			System.out.println("-----------------------------------------------");
+			System.out.println(num);
 		if(num==null){
-			
+			System.out.println("insert 실행");
 			String sql = String.format("insert into board(writer,title,content,regtime,hits) values('%s','%s','%s','%s',%d)",
 					writer,title,content,regtime,hits);
 			System.out.println(sql);
 			stmt.executeQuery(sql);
 			
-		}
-		else if(num!=null){
-
+		}else if(num!=null){
+			System.out.println("update 실행");
 			int num1 = Integer.parseInt(request.getParameter("num"));
-			String sql = String.format("update board set writer='%s', title='%s', content='%s', regtime='%s', hits=%d where id=%d",
+			String sql = String.format("update board set writer='%s', title='%s', content='%s', regtime='%s', hits=%d where num=%d",
 			writer,title,content,regtime,hits,num1);
-			System.out.print(sql);
+			System.out.println(sql);
 			stmt.executeUpdate(sql);
 		
 		}

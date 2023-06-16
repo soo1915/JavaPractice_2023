@@ -59,10 +59,44 @@
 		e.printStackTrace();
 	}
 %>
+
+	
+	
 </table>
 
+<form action = "select.jsp">
+	<table>
+		<tr>
+		<td>
+			<input type = "button" value="글쓰기" onclick="location.href='write.jsp'">
+		</td>
+		<td></td>
+		<td>
+			<select name = "searchOption">
+				<option value = "0"> 선택</option>
+				<option value = "num"> 글번호</option>
+				<option value = "writer"> 작성자</option>
+				<option value = "title"> 제목 </option>
+			</select>
+		</td>
+		<td>
+			<input type = "text" name = "searchField" placeholder = "검색어 입력" maxlength="100"/>
+		</td>
+		<td>
+			<input type = "submit" value = "검색하기"/>	
+			
+		</td>	
+	</tr>
+	</table>
+</form>
+
 <br>
-<input type = "button" value="글쓰기" onclick="location.href='write.jsp'">
+
+
+
+
+
+
 
 </body>
 </html>

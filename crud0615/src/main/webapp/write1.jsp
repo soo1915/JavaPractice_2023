@@ -53,11 +53,12 @@
 </head>
 <body>
 <form action="write2.jsp">
+number<input type="text" name="num" value="<%=num %>">
 writer<input type="text" name="writer" value="<%=writer %>">
 title<input type="text" name="title" value="<%=title %>">
 content<input type="text" name="content" value="<%=content %>">
 regtime<input type="text" name="regtime" value="<%=regtime %>">
-<input type="submit" value="올리기" onclick="location.href='list.jsp?num=<%=num%>'">
+<input type="submit" value="올리기" >
 </form>
 </body>
 </html>
