@@ -15,6 +15,9 @@ public class BoardDto {
 		return "BoardDto [num=" + num + ", writer=" + writer + ", title=" + title + ", content=" + content + "]";
 	}
 
+	BoardDto() {
+		
+	}
 
 	public BoardDto(int num, String writer, String title, String content) {
 		super();

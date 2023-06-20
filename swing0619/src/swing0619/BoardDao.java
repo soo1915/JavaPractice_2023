@@ -5,9 +5,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class BoardDao {
+	
+	String getCurrentTime() {
+		return LocalDate.now() + " " + LocalTime.now().toString().substring(0, 8);
+	}
 
 	Connection getConnection() throws ClassNotFoundException, SQLException {
 		Class.forName("org.mariadb.jdbc.Driver");
@@ -32,5 +38,13 @@ public class BoardDao {
 			list.add(dto);
 		}
 		return list;
+	}
+	
+	int insertOne(BoardDto dto) throws ClassNotFoundException, SQLException {
+		Connection conn = this.getConnection();
+		Statement stmt = conn.createStatement();
+		String sql = String.format("insert into board(writer, title, content, regtime, hits) values ('%s', '%s','%s', '%s', 0)",
+				dto.getWriter(), dto.getTitle(), dto.getTitle(), dto.getContent(), this.getCurrentTime());
+		return stmt.executeUpdate(sql);
 	}
 }
