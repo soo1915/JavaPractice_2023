@@ -12,7 +12,7 @@ public class Exam06 {
 		
 		while(run) {
 			System.out.println("-------------------");
-			System.out.println("1. 학생수 | 2. 점수 입력 | 3. 점수리스트 | 4. 분석 | 5. 종료");
+			System.out.println("1. 학생수 | 2. 점수 입력 | 3. 점 | 4. 점수 평균 분석 | 5. 종료");
 			System.out.println("-------------------");
 			System.out.print("선택>");
 			
@@ -31,7 +31,7 @@ public class Exam06 {
 				for (int i = 0; i<studentNum; i++) {
 					System.out.println("score[" + i +"]>" + scores[i]);
 				}
-			}else if(selectNo == 41) {
+			}else if(selectNo == 4) {
 				int max = 0;
 				int sum = 0;
 				double avg = 0;
