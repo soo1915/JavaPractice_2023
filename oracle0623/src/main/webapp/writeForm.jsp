@@ -34,19 +34,19 @@
 	<table>
 		<tr>
 			<th> 이름 </th>
-			<td> <input type = "text" name = "name" value="<%=name %>"/></td>
+			<td> <input type = "text" name = "name" /></td>
 		</tr>
 		<tr>
 			<th> 국어 </th>
-			<td> <input type = "text" name = "kor" value="<%=kor %>"/></td>
+			<td> <input type = "text" name = "kor"/></td>
 		</tr>
 			<tr>
 			<th> 영어 </th>
-			<td> <input type = "text" name = "eng" value="<%=eng %>"/></td>
+			<td> <input type = "text" name = "eng"/></td>
 		</tr>
 			<tr>
 			<th> 수학 </th>
-			<td> <input type = "text" name = "math" value="<%=math %>"/></td>
+			<td> <input type = "text" name = "math"/></td>
 		</tr>
 	</table>
 	<input type = "submit" value="전송"/>
