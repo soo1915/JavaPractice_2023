@@ -1,18 +1,39 @@
 package test;
 
+class ClassA {
+	ClassA(){
+		System.out.println('A');
+		this.prn();		
+	}
+
+	void prn() {
+		System.out.println('B');
+	}
+}
+
+class ClassB extends ClassA {
+	ClassB() {
+		super();
+		System.out.println('D');
+	}
+	
+	void prn() {
+		System.out.println('E');
+	}
+	
+	void prn(int x) {
+		System.out.println(x);
+	}
+}
+
+
 public class Practice {
 
 	public static void main(String[] args) {
 		
-		int[] sc = {95, 71, 84};
-		int sum = 0;
-		for(int nn : sc) {
-			sum = sum + nn;
-		}
-		
-		System.out.println(sum);
-		double avg = sum/3;
-		System.out.println(avg);
+		int x = 7;
+		ClassB cal = new ClassB();
+		cal.prn(x);
 	
 	}
 }
