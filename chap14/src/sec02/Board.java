@@ -20,6 +20,10 @@ public class Board implements Serializable{
 		this.date = date;
 	}
 
+	public Board() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getBno() {
 		return bno;
 	}
