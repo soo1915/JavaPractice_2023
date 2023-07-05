@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="board.oracle.*" %>
 
 <%
     // 글 번호 값 얻기, 주어지지 않았으면 0으로 설정
@@ -17,29 +18,12 @@
 
     // 글 번호가 주어졌으면, 글 수정 모드
     if (num > 0) {
-
-        Class.forName("oracle.jdbc.driver.OracleDriver");
-        try (
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
-            Statement stmt = conn.createStatement();
-
-            // 쿼리 실행
-            ResultSet rs = stmt.executeQuery(
-                    "select * from board where num=" + num);
-        ) {
-            if (rs.next()) {
-                // 읽어들인 글 데이터를 변수에 저장
-                writer  = rs.getString("writer" );
-                title   = rs.getString("title"  );
-                content = rs.getString("content");
-
-                // 글 수정 모드일 때는 저장 버튼을 누르면 UPDATE 실행
-                action  = "update.jsp?num=" + num;
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+		BoardDao dao = new BoardDao();
+		BoardDto dto = dao.selectOne(num, false);
+		writer = dto.getWriter();
+		title = dto.getTitle();
+		content = dto.getContent();
+    	action = "update.jsp?num=" + num;
     }
 %>
 

@@ -1,8 +1,14 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="board.oracle.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="java.sql.*" %>
-
+<%@ page import="java.util.*" %>
+<%@ page import="board.oracle.*" %>
+<%
+BoardDao dao = new BoardDao();
+ArrayList<BoardDto> list = dao.selectList();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,35 +38,21 @@
         <th                >조회수  </th>
     </tr>
 <%
-    // 게시글 리스트 읽어오기
-    Class.forName("oracle.jdbc.driver.OracleDriver");
-    try (
-        Connection conn = DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
-        Statement stmt = conn.createStatement();
+    for(BoardDto dto : list) {
     
-        // 쿼리 실행
-        ResultSet rs = stmt.executeQuery(
-                "select * from board order by num desc");           
-    ) {
-        // 게시글 레코드가 남아있는 동안 반복하며 화면에 출력
-        while (rs.next()) {
 %>         
         <tr>
-            <td><%=rs.getInt("num")%></td>
+            <td><%=dto.getNum()%></td>
             <td style="text-align:left;">
-                <a href="view.jsp?num=<%=rs.getInt("num")%>">
-                    <%=rs.getString("title")%>
+                <a href="view.jsp?num=<%=dto.getNum()%>">
+                    <%=dto.getTitle()%>
                 </a>
             </td>
-            <td><%=rs.getString("writer" )%></td>
-            <td><%=rs.getString("regtime")%></td>
-            <td><%=rs.getInt   ("hits"   )%></td>
+            <td><%=dto.getWriter()%></td>
+            <td><%=dto.getRegtime()%></td>
+            <td><%=dto.getHits()%></td>
         </tr>
 <%
-        }
-    } catch(Exception e) {
-        e.printStackTrace();
     }
 %>
 </table>

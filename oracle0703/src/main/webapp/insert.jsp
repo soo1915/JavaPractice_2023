@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ page import="java.sql.*" %>  
-<%@ page import="java.time.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="board.oracle.*" %>
  
 <%
     request.setCharacterEncoding("utf-8");
@@ -24,24 +24,9 @@
 <%        
         return;
     }
-
-    // 입력된 내용으로 새 글 레코드 추가
-    Class.forName("oracle.jdbc.driver.OracleDriver");
-    try ( 
-        Connection conn = DriverManager.getConnection(
-                "jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
-        Statement stmt = conn.createStatement();            
-    ) {
-        // 현재 시간 얻기
-   
-        
-        // 쿼리 실행
-        stmt.executeUpdate(String.format("insert into board(num, writer, title, content, regtime, hits) values (SEQ_TEST.nextval, '%s', '%s', '%s', to_char(sysdate, 'YYYY-MM-DD HH:MI:SS'), 0)",
-				 writer, title, content));
-    
-    } catch(Exception e) {
-        e.printStackTrace();
-    } 
+	BoardDto dto = new BoardDto(0, writer, title, content, "", 0);
+    BoardDao dao = new BoardDao();
+    dao.insertOne(dto);
     
     // 목록보기 화면으로 돌아감
     response.sendRedirect("list.jsp");

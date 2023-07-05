@@ -1,8 +1,8 @@
  <%@ page language="java" contentType="text/html; charset=UTF-8"
      pageEncoding="UTF-8"%>
      
- <%@ page import="java.sql.*" %>  
- <%@ page import="java.time.*" %>
+<%@ page import="java.util.*" %>  
+<%@page import="board.oracle.*"%>
   
  <%
      request.setCharacterEncoding("utf-8");
@@ -26,26 +26,14 @@
          return;
      }
  
-     // 입력된 내용으로 게시글 데이터 업데이트
-     Class.forName("oracle.jdbc.driver.OracleDriver");
-     try ( 
-         Connection conn = DriverManager.getConnection(
-                 "jdbc:oracle:thin:@localhost:1521:xe", "scott", "tiger");
-         Statement stmt = conn.createStatement();            
-     ) {
-         // 현재 시간 얻기
-         String curTime = LocalDate.now() + " " + 
-                          LocalTime.now().toString().substring(0, 8);
-         
-         // 쿼리 실행
-         stmt.executeUpdate(String.format(
-                 "update board set writer='%s', title='%s', " +
-                 "content='%s', regtime='%s' where num=%d",
-                 writer, title, content, curTime, num));
      
-     } catch(Exception e) {
-         e.printStackTrace();
-     }
+     BoardDto dto = new BoardDto();
+     dto.setNum(num);
+     dto.setWriter(writer);
+     dto.setTitle(title);
+     dto.setContent(content);
+     BoardDao dao = new BoardDao();
+     dao.updateOne(dto);
      
      // 글 보기 화면으로 돌아감
      response.sendRedirect("view.jsp?num=" + num);
