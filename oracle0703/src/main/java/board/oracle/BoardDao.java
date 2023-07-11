@@ -1,7 +1,6 @@
 package board.oracle;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +22,6 @@ public class BoardDao implements Board{
 			initCtx = new InitialContext();
 			DataSource source = (DataSource)initCtx.lookup("java:comp/env/jdbc/OracleDB");
 			conn = source.getConnection();
-			System.out.println("DB 커넥션 성공");
 		} catch(NamingException | SQLException e) {
 			e.printStackTrace();
 		}
