@@ -29,5 +29,5 @@
     dao.insertOne(dto);
     
     // 목록보기 화면으로 돌아감
-    response.sendRedirect("list.jsp");
+    response.sendRedirect("list2.jsp");
 %>     

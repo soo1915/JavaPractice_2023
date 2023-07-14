@@ -36,6 +36,6 @@
      dao.updateOne(dto);
      
      // 글 보기 화면으로 돌아감
-     response.sendRedirect("view.jsp?num=" + num);
+     response.sendRedirect("view2.jsp?num=" + num);
  %>     
  
