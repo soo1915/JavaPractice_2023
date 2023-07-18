@@ -16,10 +16,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 /**
- * Servlet implementation class AppObj
+ * Servlet implementation class SelTrip
  */
-@WebServlet("/AppObj")
-public class AppObj extends HttpServlet {
+@WebServlet("/SelTrip")
+public class SelTrip extends HttpServlet {
 	private static SqlSessionFactory sqlSessionFactory;
 	static {
 		try {
@@ -31,13 +31,12 @@ public class AppObj extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
 	private static final long serialVersionUID = 1L;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AppObj() {
+    public SelTrip() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -53,7 +52,7 @@ public class AppObj extends HttpServlet {
 			List<Object> num = sqlSession.selectList("org.mybatis.persistence.EmpMapper.selectTrip");
 			System.out.println(num);
 			request.setAttribute("list", num);
-			request.getRequestDispatcher("index-result.jsp").forward(request, response);
+			request.getRequestDispatcher("result.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

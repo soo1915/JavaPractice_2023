@@ -2,7 +2,6 @@ package com.db;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,10 +15,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 /**
- * Servlet implementation class AppObj
+ * Servlet implementation class DelTrip
  */
-@WebServlet("/AppObj")
-public class AppObj extends HttpServlet {
+@WebServlet("/DelTrip")
+public class DelTrip extends HttpServlet {
 	private static SqlSessionFactory sqlSessionFactory;
 	static {
 		try {
@@ -31,13 +30,12 @@ public class AppObj extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
 	private static final long serialVersionUID = 1L;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AppObj() {
+    public DelTrip() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,14 +44,15 @@ public class AppObj extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 세션 및 트랜잭션 시작
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 
 		try {
 			// 조회 매핑 구문 실행
-			List<Object> num = sqlSession.selectList("org.mybatis.persistence.EmpMapper.selectTrip");
-			System.out.println(num);
-			request.setAttribute("list", num);
-			request.getRequestDispatcher("index-result.jsp").forward(request, response);
+			//sqlSession.selectList("org.mybatis.persistence.EmpMapper.list2");
+			int res = sqlSession.delete("org.mybatis.persistence.EmpMapper.deleteTrip", 2);
+			System.out.println(res);
+			sqlSession.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

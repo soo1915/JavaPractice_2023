@@ -15,7 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class TripDto {
 
-	int seqnum;
-	String list;
-	Date date;
+	private int num;
+	private String list;
+	private Date date;
 }
