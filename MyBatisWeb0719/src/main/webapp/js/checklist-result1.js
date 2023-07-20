@@ -3,8 +3,25 @@ const addBtn = document.querySelector("#add"); // 버튼의 id
 addBtn.addEventListener("click", addList);
 function addList() {
     let str = document.querySelector("#item");  // input의 id
+    
     if (str.value != null && str.value != '') {
-        itemList.push({idx:10, thing:str.value});
+		
+		let num;
+		console.log(str.value);
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', 'ExecAjax?thing='+str.value, true);
+		xhr.send();
+		
+		xhr.onload = ()=>{
+            if(xhr.status == 200) {
+				console.log("성공");
+                //console.log(xhr.response);
+                num = xhr.responseText;
+            } else {
+				console.log("실패");
+			}
+        }
+        itemList.push({idx:num, thing:str.value});
         str.value = '';
         str.focus();
     }

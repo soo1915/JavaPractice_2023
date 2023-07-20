@@ -19,7 +19,7 @@
 		<div id="itemList"></div>
 	</div>    
 	
-	<script src="js/checklist-result.js"></script>
+	<script src="js/checklist-result1.js"></script>
 	<script type="text/javascript">
 	//alert(itemList);
 	itemList = ${list };

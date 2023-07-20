@@ -18,7 +18,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 /**
  * Servlet implementation class StartServ
  */
-@WebServlet("/")
+@WebServlet("/start")
 public class StartServ extends HttpServlet {
 	
 	private static SqlSessionFactory sqlSessionFactory;
