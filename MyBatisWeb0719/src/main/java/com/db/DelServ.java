@@ -15,10 +15,11 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 /**
- * Servlet implementation class ExecAjax
+ * Servlet implementation class DelServ
  */
-@WebServlet("/ExecAjax")
-public class ExecAjax extends HttpServlet {
+@WebServlet("/DelServ")
+public class DelServ extends HttpServlet {
+	
 	private static SqlSessionFactory sqlSessionFactory;
 
 	static {
@@ -37,7 +38,7 @@ public class ExecAjax extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ExecAjax() {
+    public DelServ() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,24 +47,21 @@ public class ExecAjax extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String thing = request.getParameter("thing");
+		int num = Integer.parseInt(request.getParameter("num"));
 		// 세션 및 트랜잭션 시작
-				SqlSession sqlSession = sqlSessionFactory.openSession();
-				
-				try {
-					Goods goods = new Goods(0, thing, null); 
-					// 조회 매핑 구문 실행
-					int res = sqlSession.insert("org.mybatis.persistence.EmpMapper.insertGoods"
-							, goods);
-					response.getWriter().print(goods.getNum());
-					sqlSession.commit();
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					// 세션 및 트랜잭션 종료
-					sqlSession.close();
-				}
+		SqlSession sqlSession = sqlSessionFactory.openSession();
 		
+		try {
+			// 조회 매핑 구문 실행
+			int res = sqlSession.delete("org.mybatis.persistence.EmpMapper.deleteGoods", num);
+			response.getWriter().print(res);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// 세션 및 트랜잭션 종료
+			sqlSession.close();
+		}
 	}
 
 	/**
