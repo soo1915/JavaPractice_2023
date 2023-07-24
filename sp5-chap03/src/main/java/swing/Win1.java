@@ -22,6 +22,7 @@ import spring.MemberListPrinter;
 import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
+import spring.VersionPrinter;
 import spring.WrongIdPasswordException;
 
 public class Win1 extends JFrame {
@@ -178,6 +179,18 @@ public class Win1 extends JFrame {
 						ctx.getBean("listPrinter", MemberListPrinter.class);
 				//ta.setText("");
 				ta.setText(listPrinter.printAllS());
+			}
+		});
+		
+		bt4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VersionPrinter versionPrinter = 
+						ctx.getBean("versionPrinter", VersionPrinter.class);
+				//versionPrinter.print();
+				ta.setText(versionPrinter.printS());
+				
 			}
 		});
 	}
