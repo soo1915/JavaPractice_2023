@@ -85,7 +85,7 @@ public class MoveTest extends HttpServlet {
 	            dao.updateOne(dto);
 
 		        request.setAttribute("num", num);
-		        view = "view?num=" + num;
+		        view = "redirect:view?num=" + num;
 //		        request.setAttribute("action", conPath+"/view?num="+num);
 //		        view = "write2.jsp";
 //		        view = "write?num=" + num;
