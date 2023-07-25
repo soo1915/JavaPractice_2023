@@ -1,35 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%@ page import="java.util.*" %>
-<%@ page import="board.oracle.*" %>
-
-<%
-    // 글 번호 값 얻기, 주어지지 않았으면 0으로 설정
-    String tmp = request.getParameter("num");
-    int num = (tmp != null && tmp.length() > 0) ? Integer.parseInt(tmp)
-                                                : 0;
-
-    // 새 글쓰기 모드를 가정하고 변수 초기값 설정
-    String writer  = "";
-    String title   = "";
-    String content = "";
-    String action  = "insert.jsp";
-    BoardDao dao = null;
-    BoardDto dto = null;
-    // 글 번호가 주어졌으면, 글 수정 모드
-    if (num > 0) {
-		dao = new BoardDao();
-		dto = dao.selectOne(num, false);
-		writer = dto.getWriter();
-		title = dto.getTitle();
-		content = dto.getContent();
- 		// 글 수정 모드일 때는 저장 버튼을 누르면 UPDATE 실행
-    	action  = "update.jsp?num=" + num;
-    }
-    request.setAttribute("dto", dto);
-    request.setAttribute("action", action);
-%>
 
 <!DOCTYPE html>
 <html>

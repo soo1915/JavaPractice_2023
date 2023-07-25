@@ -35,7 +35,7 @@
             <td>${dto.num}</td>
             <td style="text-align:left;">
                 <!-- <a href="#" onclick="ajax(${dto.num})"> -->
-                <a href="/view?num=${dto.num}">
+                <a href="${pageContext.request.contextPath}/view?num=${dto.num}">
                     ${dto.title}
                 </a>
             </td>
@@ -47,7 +47,7 @@
 </table>
 
 <br>
-<input type="button" value="글쓰기" onclick="location.href='/write'">
+<input type="button" value="글쓰기" onclick="location.href='${pageContext.request.contextPath}/write'">
 <script>
 function ajax(num) {
     var res = document.getElementById("result");

@@ -38,11 +38,11 @@
 </table>
 
 <br>
-<input type="button" value="목록보기" onclick="location.href='list2.jsp'">
+<input type="button" value="목록보기" onclick="location.href='${pageContext.request.contextPath}/list'">
 <input type="button" value="수정"
-       onclick="location.href='write2.jsp?num=${num}'">
+       onclick="location.href='${pageContext.request.contextPath}/write?num=${num}'">
 <input type="button" value="삭제"
-       onclick="location.href='delete.jsp?num=${num}'">
+       onclick="location.href='${pageContext.request.contextPath}/delete?num=${num}'">
 
 </body>
 </html>
