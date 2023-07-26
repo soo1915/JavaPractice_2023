@@ -7,8 +7,18 @@ import dao.BoardDto;
 
 public class BoardServiceImpl implements BoardService{
 
-	BoardDao dao = new BoardDao();
+	BoardDao dao;
 	
+	//생성자 방식
+	public BoardServiceImpl(BoardDao dao) {
+		this.dao = dao;
+	}
+
+	// setter 방식
+//	public void setDao(BoardDao dao) {
+//		this.dao = dao;
+//	}
+
 	@Override
 	public ArrayList<BoardDto> findAll() {
 		return dao.selectList();
@@ -40,4 +50,13 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 
+	@Override
+	public boolean hasArticle(Long num) {
+		BoardDto dto = dao.selectOne(num, false);
+		if (dto == null) {
+			return false;
+		}
+		return true;
+	}
+	
 }

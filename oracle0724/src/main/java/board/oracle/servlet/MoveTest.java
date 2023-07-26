@@ -60,23 +60,47 @@ public class MoveTest extends HttpServlet {
                 //request.setAttribute("action", conPath+"/update");
                 view = "write2.jsp";
             } else {
-            	view = "redirect:write2.jsp";
+            	request.setAttribute("action", conPath + "/insert");
+            	view = "write2.jsp";
             }
         } else if (com.equals("/insert")) {
-        	//response.getWriter().println("insert");
+        	request.setCharacterEncoding("utf-8");
 
+        	// 양식에 입력되었던 값 읽기
+        	String writer  = request.getParameter("writer" );
+        	String title   = request.getParameter("title"  );
+        	String content = request.getParameter("content");
+        	
+        	// 빈 칸이 하나라도 있으면 오류 출력하고 종료
+        	if (writer  == null || writer.length()  == 0 ||
+                title   == null || title.length()   == 0 ||
+                content == null || content.length() == 0) {
+        		request.setAttribute("errorMessage", "모든 항목이 빈칸 없이 입력되어야 합니다.");
+        		view="errorBack.jsp";
+        	} else {
+        		BoardDto dto = new BoardDto();
+        		dto.setWriter(writer);
+        		dto.setTitle(title);
+        		dto.setContent(content);
+        		BoardDao dao = new BoardDao();
+        		dao.insertOne(dto);
+        		view = "redirect:" + conPath + "/list";
+        	}
+        	
         } else if (com.equals("/update"))  {
-        	//response.getWriter().println("update");
         	request.setCharacterEncoding("utf-8");
         	// 글 번호가 주어졌으면, 글 수정 모드
         	int    num     = Integer.parseInt(request.getParameter("num"));
-            if (num > 0) {
-            	
-	            String writer  = request.getParameter("writer" );
-	            String title   = request.getParameter("title"  );
-	            String content = request.getParameter("content");
-	            
-	            BoardDto dto = new BoardDto();
+            String writer  = request.getParameter("writer" );
+            String title   = request.getParameter("title"  );
+            String content = request.getParameter("content");
+            if (writer  == null || writer.length()  == 0 ||
+                title   == null || title.length()   == 0 ||
+                content == null || content.length() == 0) {
+        		request.setAttribute("errorMessage", "모든 항목이 빈칸 없이 입력되어야 합니다.");
+        		view="errorBack.jsp";
+            } else {
+            	BoardDto dto = new BoardDto();
 	            dto.setNum(num);
 	        	dto.setWriter(writer);
 	        	dto.setTitle(title);
@@ -86,15 +110,16 @@ public class MoveTest extends HttpServlet {
 
 		        request.setAttribute("num", num);
 		        view = "redirect:view?num=" + num;
-//		        request.setAttribute("action", conPath+"/view?num="+num);
-//		        view = "write2.jsp";
-//		        view = "write?num=" + num;
-		        
             }
-            
-            // 글 보기 화면으로 돌아감
-//            view = "view2.jsp?num=" + num;
-        } 
+        } else if (com.equals("/delete")) {
+        	// 지정된 글 번호 얻기
+            int num = Integer.parseInt(request.getParameter("num"));
+
+        	BoardDao dao = new BoardDao();
+        	dao.deleteOne(num);
+        	view = "redirect:" + conPath + "/list";
+        }
+        
         
         // view에 담긴 문자열에 따라 포워딩 또는 리다이렉팅
         if (view.startsWith("redirect:")) {

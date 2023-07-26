@@ -10,4 +10,6 @@ public interface BoardService {
 	void saveOne(BoardDto dto);
 	void modifyOne(BoardDto dto);
 	void cancelOne(Long num);
+	boolean hasArticle(Long num);
+	
 }
