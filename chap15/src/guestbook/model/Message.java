@@ -1,11 +1,22 @@
 package guestbook.model;
 
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@NoArgsConstructor
+@ToString
 public class Message {
 
 	private int id;
 	private String guestName;
 	private String password;
 	private String message;
+	
+	public Message(String guestName, String password, String message) {
+		this.guestName = guestName;
+		this.password = password;
+		this.message = message;
+	}
 
 	public int getId() {
 		return id;
