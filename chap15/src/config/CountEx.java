@@ -14,7 +14,7 @@ public class CountEx {
 		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(AppCtx.class);
 		MessageDao messageDao = ctx.getBean("messageDao", MessageDao.class);
 		// count
-		System.out.println(messageDao.count());
+		System.out.println(messageDao.selectCount());
 		// insert
 		Message msg = new Message("강감찬", "1234", "hello");
 		messageDao.insert(msg);

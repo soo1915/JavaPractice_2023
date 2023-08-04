@@ -4,7 +4,14 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import command.DeleteMessageHandler;
+import command.HelloHandler;
+import command.ListHandler;
+import command.WriteMessageHandler;
 import guestbook.dao.MessageDao;
+import guestbook.service.DeleteMessageService;
+import guestbook.service.GetMessageListService;
+import guestbook.service.WriteMessageService;
 
 @Configuration
 public class AppCtx {
@@ -24,5 +31,40 @@ public class AppCtx {
 	@Bean
 	public MessageDao messageDao() {
 		return new MessageDao(dataSource());
+	}
+	
+	@Bean
+	public DeleteMessageService deleteMessageService() {
+		return new DeleteMessageService();
+	}
+	
+	@Bean
+	public GetMessageListService getMessageListService() {
+		return new GetMessageListService();
+	}
+	
+	@Bean
+	public WriteMessageService writeMessageService() {
+		return new WriteMessageService();
+	}
+	
+	@Bean
+	public HelloHandler helloHandler() {
+		return new HelloHandler();
+	}
+	
+	@Bean
+	public ListHandler listHandler() {
+		return new ListHandler();
+	}
+	
+	@Bean
+	public WriteMessageHandler writeMessageHandler() {
+		return new WriteMessageHandler();
+	}
+	
+	@Bean
+	public DeleteMessageHandler deleteMessageHandler() {
+		return new DeleteMessageHandler();
 	}
 }

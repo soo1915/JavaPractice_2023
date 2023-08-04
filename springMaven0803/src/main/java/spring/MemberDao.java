@@ -1,11 +1,18 @@
 package spring;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 public class MemberDao {
 
@@ -42,5 +49,42 @@ public class MemberDao {
 				return rs.getInt(1);
 		});
 		return results.get(0);
+	}
+	
+	public void update(Member member) {
+		String sql = "update Member set name = ?, password = ?, regdate = ? where email = ?";
+//		jdbcTemplate.update(sql, member.getName(), member.getPassword(), member.getEmail());
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, member.getName());
+				pstmt.setString(2, member.getPassword());
+				pstmt.setTimestamp(3, Timestamp.valueOf(member.getRegisterDateTime()));
+				pstmt.setString(4, member.getEmail());
+				
+				return pstmt;
+			}
+		});
+	}
+	
+	public Member insert(Member member) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		String sql = "insert into member (email, password, name, regdate) values (?, ?, ?, ?)";
+		PreparedStatementCreator psc = (Connection con) -> {
+			PreparedStatement pstmt = con.prepareStatement(sql, new String[] {"ID"});
+			pstmt.setString(3, member.getName());
+			pstmt.setString(2, member.getPassword());
+			pstmt.setTimestamp(4, Timestamp.valueOf(member.getRegisterDateTime()));
+			pstmt.setString(1, member.getEmail());
+			
+			return pstmt;
+		};
+
+		jdbcTemplate.update(psc, keyHolder);
+		Number keyValue = keyHolder.getKey();
+		member.setId(keyValue.longValue());
+		return member;
 	}
 }

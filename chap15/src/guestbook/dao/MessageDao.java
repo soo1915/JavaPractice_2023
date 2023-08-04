@@ -24,7 +24,7 @@ public class MessageDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public int count() {
+	public int selectCount() {
 		String sql = "select count(*) from guestbook_message";
 		Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
 		return count;
