@@ -25,7 +25,7 @@ public class DeleteMessageHandler implements CommandHandler {
 		}catch(InvalidPassowrdException ex) {
 			invalidPassowrd = true;
 		}
-		req.setAttribute("invalidPasswrd", invalidPassowrd);
+		req.setAttribute("invalidPassowrd", invalidPassowrd);
 		return "/WEB-INF/view/deleteMessage.jsp";
 	}
 

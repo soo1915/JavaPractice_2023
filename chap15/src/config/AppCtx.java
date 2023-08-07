@@ -4,6 +4,7 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import command.ConfirmDeletionHandler;
 import command.DeleteMessageHandler;
 import command.HelloHandler;
 import command.ListHandler;
@@ -66,5 +67,10 @@ public class AppCtx {
 	@Bean
 	public DeleteMessageHandler deleteMessageHandler() {
 		return new DeleteMessageHandler();
+	}
+	
+	@Bean
+	public ConfirmDeletionHandler confirmDeletionHandler() {
+		return new ConfirmDeletionHandler();
 	}
 }

@@ -28,10 +28,10 @@ public class ControllerUsingURI extends HttpServlet {
     public void init() throws ServletException {
     	ctx = new AnnotationConfigApplicationContext(AppCtx.class);
         String configFile = getInitParameter("configFile");
-        System.out.println(configFile);
+//        System.out.println(configFile);
         Properties prop = new Properties();
         String configFilePath = getServletContext().getRealPath(configFile);
-        System.out.println(configFilePath);
+//        System.out.println(configFilePath);
         try (FileReader fis = new FileReader(configFilePath)) {
             prop.load(fis);
         } catch (IOException e) {

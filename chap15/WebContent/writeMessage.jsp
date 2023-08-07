@@ -8,10 +8,10 @@
 <jsp:useBean id="message" class="guestbook.model.Message">
 	<jsp:setProperty name="message" property="*" />
 </jsp:useBean>
-<%
-	WriteMessageService writeService = WriteMessageService.getInstance();
-	writeService.write(message);
-%>
+<%-- <% --%>
+// 	WriteMessageService writeService = WriteMessageService.getInstance();
+// 	writeService.write(message);
+<%-- %> --%>
 <html>
 <head>
 	<title>방명록 메시지 남김</title>
