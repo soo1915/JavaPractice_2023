@@ -4,55 +4,55 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
 		http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
-
-	<listener>
-		<listener-class>jdbc.DBCPInitListener</listener-class>
-	</listener>
-
-	<context-param>
-		<param-name>poolConfig</param-name>
-		<param-value>
-			jdbcdriver=com.mysql.jdbc.Driver
-			jdbcUrl=jdbc:mysql://localhost:3306/board?characterEncoding=utf8
-			dbUser=jspexam
-			dbPass=jsppw
-			validationQuery=select 1
-			minIdle=3
-			maxTotal=30
-			poolName=board
-		</param-value>
-	</context-param>
-
-	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>util.CharacterEncodingFilter</filter-class>
+	<welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
 		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>utf-8</param-value>
-		</init-param>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>encodingFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	<servlet>
-		<servlet-name>ControllerUsingURI</servlet-name>
-		<servlet-class>mvc.controller.ControllerUsingURI</servlet-class>
-		<init-param>
-			<param-name>configFile</param-name>
+			<param-name>contextClass</param-name>
 			<param-value>
-                /WEB-INF/commandHandlerURI.properties
-            </param-value>
+				org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				config.MvcConfig
+				config.ControllerConfig
+			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>ControllerUsingURI</servlet-name>
-		<url-pattern>*.do</url-pattern>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
 	<filter>
 		<filter-name>LoginCheckFilter</filter-name>

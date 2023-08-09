@@ -29,8 +29,21 @@ public class MemberDao {
 		Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
 		return count;
 	}
+	
+	public List<Member> selectAll() {
+		String sql = "select * from member";
+		List<Member> list = this.jdbcTemplate.query(sql, (rs, r) ->{
+			Member member = new Member(
+				rs.getString("memberid"), 
+				rs.getString("name"), 
+				rs.getString("password"),
+				toDate(rs.getTimestamp("regdate")));
+			return member;
+		});
+		return list;
+	}
 
-	public Member selectById(String id) throws SQLException {
+	public Member selectById(String id) {
 		
 		String sql = "select * from member where memberid = ?";
 		
@@ -55,7 +68,7 @@ public class MemberDao {
 		return date == null ? null : new Date(date.getTime());
 	}
 
-	public void insert(Member mem) throws SQLException {
+	public void insert(Member mem)  {
 		
 		String sql = "insert into member values(?,?,?,?)";
 		
@@ -77,7 +90,7 @@ public class MemberDao {
 
 
 
-	public void update(Member member) throws SQLException {
+	public void update(Member member)  {
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			
 			@Override
