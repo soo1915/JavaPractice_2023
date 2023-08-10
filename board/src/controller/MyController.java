@@ -64,12 +64,6 @@ public class MyController {
 		return "selectAll";
 	}
 	
-	@GetMapping("/count") 
-	public String countMember() {
-//		User user = loginService.login("aaa", "111");
-//		System.out.println(user.getId()+","+user.getName());
-		changePasswordService.changePassword("aaa", "111", "112");
-		return "count";
-	}
+	
 	
 }

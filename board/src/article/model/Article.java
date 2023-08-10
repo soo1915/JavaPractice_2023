@@ -2,6 +2,9 @@ package article.model;
 
 import java.util.Date;
 
+import lombok.ToString;
+
+@ToString
 public class Article {
 
 	private Integer number;

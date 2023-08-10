@@ -4,37 +4,52 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
+
 import article.model.Article;
 import article.model.Writer;
-import jdbc.JdbcUtil;
 
 public class ArticleDao {
 
-	public Article insert(Connection conn, Article article) throws SQLException {
-		PreparedStatement pstmt = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = conn.prepareStatement("insert into article "
+	private JdbcTemplate jdbcTemplate;
+	
+	public ArticleDao(DataSource dataSource) {
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	}
+	
+	public Article insert(Article article) {
+		String insSql = "insert into article "
 					+ "(writer_id, writer_name, title, regdate, moddate, read_cnt) "
-					+ "values (?,?,?,?,?,0)");
-			pstmt.setString(1, article.getWriter().getId());
-			pstmt.setString(2, article.getWriter().getName());
-			pstmt.setString(3, article.getTitle());
-			pstmt.setTimestamp(4, toTimestamp(article.getRegDate()));
-			pstmt.setTimestamp(5, toTimestamp(article.getModifiedDate()));
-			int insertedCount = pstmt.executeUpdate();
+					+ "values (?,?,?,?,?,0)";
+		int insertedCount = jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(insSql);
+				pstmt.setString(1, article.getWriter().getId());
+				pstmt.setString(2, article.getWriter().getName());
+				pstmt.setString(3, article.getTitle());
+				pstmt.setTimestamp(4, toTimestamp(article.getRegDate()));
+				pstmt.setTimestamp(5, toTimestamp(article.getModifiedDate()));
+				return pstmt;
+			}
+		});
+		
+		if (insertedCount > 0) {
+			String selSql = "select last_insert_id() from article";
+			List<Article> list = jdbcTemplate.query(selSql, new RowMapper<Article>() {
 
-			if (insertedCount > 0) {
-				stmt = conn.createStatement();
-				rs = stmt.executeQuery("select last_insert_id() from article");
-				if (rs.next()) {
+				@Override
+				public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+
 					Integer newNo = rs.getInt(1);
 					return new Article(newNo,
 							article.getWriter(),
@@ -43,54 +58,40 @@ public class ArticleDao {
 							article.getModifiedDate(),
 							0);
 				}
-			}
-			return null;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(stmt);
-			JdbcUtil.close(pstmt);
+				
+			});
+			return list.isEmpty() ? null : list.get(0);
 		}
-	}
+		return null;
+	} 
+		
 
 	private Timestamp toTimestamp(Date date) {
 		return new Timestamp(date.getTime());
 	}
 
-	public int selectCount(Connection conn) throws SQLException {
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select count(*) from article");
-			if (rs.next()) {
-				return rs.getInt(1);
-			}
-			return 0;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(stmt);
-		}
+	public int selectCount() {
+		String sql = "select count(*) from article";
+		Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+		return count;
 	}
 
-	public List<Article> select(Connection conn, int startRow, int size) throws SQLException {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = conn.prepareStatement("select * from article " +
-					"order by article_no desc limit ?, ?");
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, size);
-			rs = pstmt.executeQuery();
-			List<Article> result = new ArrayList<>();
-			while (rs.next()) {
-				result.add(convertArticle(rs));
+	public List<Article> select(int startRow, int size) {
+		String sql = "select * from article order by article_no desc limit ?, ?";
+		List<Article> result = jdbcTemplate.query(sql, new RowMapper<Article>() {
+
+			@Override
+			public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Writer writer = new Writer(rs.getString("writer_id"), rs.getString("writer_name"));
+				Article article = new Article(rs.getInt("article_no"), writer, 
+						rs.getString("writer_name"), rs.getDate("regdate"), rs.getDate("moddate"), rs.getInt("read_cnt"));
+				return article;
 			}
+		}, startRow - 1, size - startRow + 1);
+			
 			return result;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-		}
-	}
+		} 
+	
 
 	private Article convertArticle(ResultSet rs) throws SQLException {
 		return new Article(rs.getInt("article_no"),
@@ -107,43 +108,42 @@ public class ArticleDao {
 		return new Date(timestamp.getTime());
 	}
 	
-	public Article selectById(Connection conn, int no) throws SQLException {
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		try {
-			pstmt = conn.prepareStatement(
-					"select * from article where article_no = ?");
-			pstmt.setInt(1, no);
-			rs = pstmt.executeQuery();
-			Article article = null;
-			if (rs.next()) {
-				article = convertArticle(rs);
-			}
+	public Article selectById(int no) {
+		String sql = "select * from article where article_no = ?";
+		List<Article> list = this.jdbcTemplate.query(sql, (rs, r) -> {
+			Article article = convertArticle(rs);
 			return article;
-		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
-		}
+		}, no);
+		return list.isEmpty() ? null : list.get(0);
 	}
 	
-	public void increaseReadCount(Connection conn, int no) throws SQLException {
-		try (PreparedStatement pstmt = 
-				conn.prepareStatement(
-						"update article set read_cnt = read_cnt + 1 "+
-						"where article_no = ?")) {
-			pstmt.setInt(1, no);
-			pstmt.executeUpdate();
-		}
+	public void increaseReadCount(int no) {
+		String sql = "update article set read_cnt = read_cnt + 1 where article_no = ?"; 
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, no);
+				return pstmt;
+			}
+		});
+		
 	}
 	
-	public int update(Connection conn, int no, String title) throws SQLException {
-		try (PreparedStatement pstmt = 
-				conn.prepareStatement(
-						"update article set title = ?, moddate = now() "+
-						"where article_no = ?")) {
-			pstmt.setString(1, title);
-			pstmt.setInt(2, no);
-			return pstmt.executeUpdate();
-		}
+	public int update(int no, String title) {
+		String sql = "update article set title = ?, moddate = now() where article_no = ?";
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			
+			@Override
+			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, title);
+				pstmt.setInt(2, no);
+				return pstmt;
+			}
+		});
+		return no;
 	}
 }
+

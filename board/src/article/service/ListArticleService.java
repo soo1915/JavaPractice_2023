@@ -1,26 +1,26 @@
 package article.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import article.dao.ArticleDao;
 import article.model.Article;
-import jdbc.connection.ConnectionProvider;
 
 public class ListArticleService {
-
-	private ArticleDao articleDao = new ArticleDao();
+	
+	@Autowired
+	private ArticleDao articleDao;
+	
 	private int size = 10;
 
+	@Transactional
 	public ArticlePage getArticlePage(int pageNum) {
-		try (Connection conn = ConnectionProvider.getConnection()) {
-			int total = articleDao.selectCount(conn);
-			List<Article> content = articleDao.select(
-					conn, (pageNum - 1) * size, size);
-			return new ArticlePage(total, pageNum, size, content);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
+		int total = articleDao.selectCount();
+		List<Article> content = articleDao.select(
+				 (pageNum - 1) * size, size);
+		return new ArticlePage(total, pageNum, size, content);
 	}
 }
+

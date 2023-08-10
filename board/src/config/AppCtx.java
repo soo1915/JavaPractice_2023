@@ -4,6 +4,8 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import article.dao.ArticleContentDao;
+import article.dao.ArticleDao;
 import member.dao.MemberDao;
 
 @Configuration
@@ -26,4 +28,13 @@ public class AppCtx {
 		return new MemberDao(dataSource());
 	}
 	
+	@Bean
+	public ArticleDao articleDao() { 
+		return new ArticleDao(dataSource());
+	}
+	
+	@Bean
+	public ArticleContentDao articleContentDao() {
+		return new ArticleContentDao(dataSource());
+	}
 }
