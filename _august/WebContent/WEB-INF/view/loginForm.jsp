@@ -13,7 +13,7 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/sign-in/">
 
-    
+    ${ctxPath = pageContext.request.contextPath ; ''}
 
     <!-- Bootstrap core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -70,7 +70,7 @@
 <main class="form-signin">
   <form action="login.do" method="post">
     <!-- 이미지 추후 수정 -->
-    <img class="mb-4"  alt="" width="72" height="57">
+    <img src="${ctxPath }/images/window-fullscreen_white.svg" class="mb-4"  alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">로그인</h1>
 	<hr class="my-4">
 	<c:if test="${errors.idOrPwNotMatch}">
@@ -93,7 +93,7 @@
         <a id="joinbtn" href=service.jsp>회원가입</a>
       </label>
     </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+    <button class="w-100 btn btn-lg btn-dark" type="submit">로그인</button>
     <!--<p class="mt-5 mb-3 text-muted">&copy; 2023</p> 저작권 관련 내용-->
   </form>
 </main>

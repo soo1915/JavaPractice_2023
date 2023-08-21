@@ -81,7 +81,7 @@
 <%--     ${ctxPath = pageContext.request.contextPath ; ''} --%>
 	<div class="find-btn">
     <button class="w-30 btn btn-primary btn-sm btn-dark" type="button"><a id="joinbtn" href="${ctxPath}/article/list.do">목록으로 이동하기</a></button>
-    <button class="w-30 btn btn-primary btn-sm btn-dark" type="button"><a id="checkbtn" href="${ctxPath}/article/read.do?no=${modReq.articleNumber}">작성 내용 확인</a></button>
+    <button class="w-30 btn btn-primary btn-sm btn-dark" type="button"><a id="checkbtn" href="${ctxPath}/article/read.do?no=${newArticleNo}">작성 내용 확인</a></button>
     <!--<p class="mt-5 mb-3 text-muted">&copy; 2023</p> 저작권 관련 내용-->
  	</div>
   </form>
