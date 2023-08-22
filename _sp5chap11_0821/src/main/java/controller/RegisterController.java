@@ -1,4 +1,4 @@
-package config;
+package controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
 import spring.DuplicateMemberException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
 
 @Controller
+@Slf4j
 public class RegisterController {
 
 	private MemberRegisterService memberRegisterService;
@@ -47,7 +49,9 @@ public class RegisterController {
 			memberRegisterService.regist(regReq);
 			return "register/step3";
 		} catch(DuplicateMemberException ex) {
-			System.out.println(ex.getMessage());
+//			System.out.println(ex.getMessage());
+			log.info("--------------------------------------------------");
+			log.debug(ex.getMessage());
 			return "register/step2";
 		}
 	}

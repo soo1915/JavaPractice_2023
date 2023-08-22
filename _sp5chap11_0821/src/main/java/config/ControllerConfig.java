@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import controller.HelloController;
+import controller.MyController;
+import controller.RegisterController;
+import controller.SurveyController;
 import spring.MemberRegisterService;
 
 @Configuration
@@ -23,5 +26,15 @@ public class ControllerConfig {
 		RegisterController controller = new RegisterController();
 		controller.setMemberRegisterService(memberRegSvc);
 		return controller;
+	}
+	
+	@Bean
+	public MyController myController() {
+		return new MyController();
+	}
+	
+	@Bean
+	public SurveyController surveyController() {
+		return new SurveyController();
 	}
 }
