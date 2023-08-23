@@ -1,14 +1,10 @@
 package spring;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 
 public class EmpDao {
 	private JdbcTemplate jdbcTemplate;
@@ -22,17 +18,10 @@ public class EmpDao {
 	}
 	
 	// emp 테이블 insert
-	public void insert() {
+	public int insert(Emp emp) {
 		String sql = "insert into emp(ename, job, mgr, hiredate, sal, comm, deptno)"
-				+ "values (?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, new PreparedStatementCreator() {
-			
-			@Override
-			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		});
+				+ "values (?, ?, ?, now(), ?, ?, ?)";
+		return this.jdbcTemplate.update(sql, emp.getEname(), emp.getJob(), emp.getMgr(), emp.getSal(), emp.getComm(), emp.getDeptno());
 	}
 	
 	// dept 테이블 select
@@ -44,6 +33,14 @@ public class EmpDao {
 					.dname(rs.getString("dname"))
 					.loc(rs.getString("loc")).build();
 			return dept;
+		});
+	}
+	
+	public List<Emp> selectEmp(){
+		String sql = "select empno, ename, deptno from emp";
+		return this.jdbcTemplate.query(sql, (rs, n)->{
+			Emp emp = Emp.builder().empno(rs.getInt("empno")).ename(rs.getString("ename")).deptno(rs.getInt("deptno")).build();
+			return emp;
 		});
 	}
 	
