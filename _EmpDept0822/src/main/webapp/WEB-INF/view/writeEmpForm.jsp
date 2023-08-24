@@ -20,7 +20,7 @@
 <label>
 <form:select path="mgr">
 <option value="99"> ---- 선택 ---- </option>
-<form:options items="${empList}" itemLabel="ename" itemValue="empno"/>
+<form:options items="${mgrList}" itemLabel="ename" itemValue="empno"/>
 </form:select>
 </label>
 </p>
@@ -30,6 +30,7 @@
 <option value="99"> ---- 선택 ---- </option>
 <form:options items="${deptList}" itemLabel="dname" itemValue="deptno"/>
 </form:select>
+<form:errors path="deptno" />
 </label>
 </p>
 <p>급여 : </br>

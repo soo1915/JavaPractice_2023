@@ -36,12 +36,30 @@ public class EmpDao {
 		});
 	}
 	
-	public List<Emp> selectEmp(){
+	public List<Emp> selectMgr() {
 		String sql = "select empno, ename, deptno from emp";
 		return this.jdbcTemplate.query(sql, (rs, n)->{
-			Emp emp = Emp.builder().empno(rs.getInt("empno")).ename(rs.getString("ename")).deptno(rs.getInt("deptno")).build();
+			Emp emp = Emp.builder()
+					.empno(rs.getInt("empno"))
+					.deptno(rs.getInt("deptno"))
+					.ename(rs.getString("ename"))
+					.build();
 			return emp;
 		});
 	}
 	
+	public Emp selectOne(int empno) {
+		String sql = "select empno, ename, deptno from emp where empno = ?";
+		return this.jdbcTemplate.queryForObject(sql, (rs, n)->{
+			Emp emp = Emp.builder().empno(rs.getInt("empno")).ename(rs.getString("ename")).deptno(rs.getInt("deptno")).build();
+			return emp;
+		}, empno);
+	}
+	
+	public String selectDept(int empno) {
+		String sql = "select dname from dept where deptno = (select deptno from emp where empno = ?)";
+		return this.jdbcTemplate.queryForObject(sql,(rs, n)->{
+			return rs.getString("dname");
+		}, empno);
+	}
 }

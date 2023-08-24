@@ -3,6 +3,7 @@ package controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,16 +25,22 @@ public class EmpDeptController {
 	public String empForm(Model model) {
 		model.addAttribute("emp", new Emp());
 		model.addAttribute("deptList", empDao.selectDept());
-		model.addAttribute("empList", empDao.selectEmp());
+		model.addAttribute("mgrList", empDao.selectMgr());
 		return "writeEmpForm";
 	}
 	
 	@PostMapping
-	public String empFormSuccess(@ModelAttribute Emp emp) {
-		log.info("입력받은 emp객체:" + emp);
+	public String empResult(@ModelAttribute Emp emp, Errors errors, Model model) {		
+		new EmpValidator(empDao).validate(emp, errors);
+		if (errors.hasErrors()) {
+			model.addAttribute("deptList", empDao.selectDept());
+			model.addAttribute("mgrList", empDao.selectMgr());
+			return "writeEmpForm";
+		}
+		log.info("입력받은 emp객체:"+emp);
 		int ret = empDao.insert(emp);
 		if (ret == 1) {
-			log.info("==========입력 완료==========");
+			log.info("-------------->입력완료");
 		}
 		return "empResult";
 	}
