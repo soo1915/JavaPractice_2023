@@ -13,6 +13,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer {
+	
+//	@Override
+//	public Validator getValidator() {
+//		return new RegisterRequestValidator();
+//	}
 
 	@Override
 	public void configureDefaultServletHandling(

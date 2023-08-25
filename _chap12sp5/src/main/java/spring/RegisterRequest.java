@@ -1,10 +1,21 @@
 package spring;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+
 public class RegisterRequest {
 
+	@NotBlank(message = "이메일을 입력하세요.")
+	@Email
 	private String email;
+	@Size(min = 6)
 	private String password;
+	@NotEmpty
 	private String confirmPassword;
+	@NotBlank
 	private String name;
 
 	public String getEmail() {
