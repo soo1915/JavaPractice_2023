@@ -11,6 +11,7 @@ public class LoginCommandValidator implements Validator{
 		return LoginCommand.class.isAssignableFrom(clazz);
 	}
 
+	// id가 공백이거나 비밀번호가 공백인지 확인
 	@Override
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "id", "required");

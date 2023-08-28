@@ -2,6 +2,7 @@ package controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,13 @@ import spring.WrongIdPasswordException;
 @Slf4j
 public class LoginController {
 
+	@Autowired
 	private AuthService authService;
 	
 	public void setAuthservice(AuthService authService) {
 		this.authService = authService;
 	}
+	
 	
 	@GetMapping
 	public String Form(LoginCommand loginCommand) { // 매개변수를 지우고 아래 문장을 작성하는 것과 동일

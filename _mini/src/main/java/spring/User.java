@@ -15,6 +15,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class User {
 
+	// 회원 등록 DTO 
 	private int id;
 	private String name;
 	private String passwd;

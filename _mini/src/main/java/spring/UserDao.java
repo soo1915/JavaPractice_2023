@@ -14,6 +14,7 @@ public class UserDao {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
+	// id 추출
 	public User selectId(Integer id) {
 		String sql = "select * from myuser where id = ?";
 		List<User> results = this.jdbcTemplate.query(sql, (rs, n) -> {
