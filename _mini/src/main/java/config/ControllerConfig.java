@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import controller.BBSController;
 import controller.LoginController;
 import controller.LogoutController;
 import spring.AuthService;
@@ -26,6 +27,9 @@ public class ControllerConfig {
 		return new LogoutController();
 	}
 	
-	
+	@Bean
+	public BBSController bbsController() {
+		return new BBSController();
+	}
 
 }

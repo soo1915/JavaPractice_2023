@@ -8,6 +8,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import spring.AuthService;
+import spring.SimpleBBSDao;
 import spring.UserDao;
 
 @Configuration
@@ -46,6 +47,11 @@ public class UserConfig {
 		AuthService authService = new AuthService();
 		authService.setUserDao(userDao());
 		return authService;
+	}
+	
+	@Bean
+	public SimpleBBSDao simpleBBSDao() {
+		return new SimpleBBSDao(dataSource());
 	}
 	
 }

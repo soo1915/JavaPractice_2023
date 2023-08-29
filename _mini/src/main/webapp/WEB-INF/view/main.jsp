@@ -17,6 +17,9 @@
     <c:if test="${! empty authInfo }">
     <p>${authInfo.name} 님, 환영합니다.</p>
     <p>
+        <a href="<c:url value="/list" />">[간단한 게시판]</a>
+    </p>
+    <p>
     	<a href="<c:url value="/edit/changePassword" />">[비밀번호 변경]</a>
 	    <a href="<c:url value="/logout" />">[로그아웃]</a>
     </p>
