@@ -2,7 +2,6 @@ package spring;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -20,6 +19,16 @@ public class MemberDao {
 
 	private JdbcTemplate jdbcTemplate;
 
+	private RowMapper<Member> memberRowMapper = (rs, n) -> {
+		Member member = new Member(
+				rs.getString("EMAIL"),
+				rs.getString("PASSWORD"),
+				rs.getString("NAME"),
+				rs.getTimestamp("REGDATE").toLocalDateTime());
+		member.setId(rs.getLong("ID"));
+		return member;
+	};
+	
 	public MemberDao(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
@@ -27,18 +36,7 @@ public class MemberDao {
 	public Member selectByEmail(String email) {
 		List<Member> results = jdbcTemplate.query(
 				"select * from MEMBER where EMAIL = ?",
-				new RowMapper<Member>() {
-					@Override
-					public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
-						Member member = new Member(
-								rs.getString("EMAIL"),
-								rs.getString("PASSWORD"),
-								rs.getString("NAME"),
-								rs.getTimestamp("REGDATE").toLocalDateTime());
-						member.setId(rs.getLong("ID"));
-						return member;
-					}
-				}, email);
+				memberRowMapper, email);
 
 		return results.isEmpty() ? null : results.get(0);
 	}
@@ -76,15 +74,7 @@ public class MemberDao {
 
 	public List<Member> selectAll() {
 		List<Member> results = jdbcTemplate.query("select * from MEMBER",
-				(ResultSet rs, int rowNum) -> {
-					Member member = new Member(
-							rs.getString("EMAIL"),
-							rs.getString("PASSWORD"),
-							rs.getString("NAME"),
-							rs.getTimestamp("REGDATE").toLocalDateTime());
-					member.setId(rs.getLong("ID"));
-					return member;
-				});
+				memberRowMapper);
 		return results;
 	}
 
@@ -96,15 +86,7 @@ public class MemberDao {
 	
 	public List<Member> selebtByRegdate(LocalDateTime from, LocalDateTime to){
 		String sql = "select * from MEMBER where REGDATE between ? and ? order by REGDATE desc";
-		List<Member> results = jdbcTemplate.query(sql, (rs, n) -> {
-			Member member = new Member(
-					rs.getString("EMAIL"),
-					rs.getString("PASSWORD"),
-					rs.getString("NAME"),
-					rs.getTimestamp("REGDATE").toLocalDateTime());
-			member.setId(rs.getLong("ID"));
-			return member;
-		}, from, to);
+		List<Member> results = jdbcTemplate.query(sql, memberRowMapper, from, to);
 		return results;
 	}
 	
